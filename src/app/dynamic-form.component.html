@@ -1,0 +1,46 @@
+<div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div *ngFor="let question of questions" class="form-row">
+      <ng-container *ngIf="question.form">
+        <button (click)="addControls('myArray')">Add</button>
+        <button (click)="removeControls('myArray')">Remove</button><br /><br />
+        <div [formArrayName]="question.key">
+          <div
+            *ngFor="let item of form.get(question.key).controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div *ngFor="let item of question.form">
+              <app-question
+                [question]="item"
+                [form]="form.get(question.key).at(i)"
+              ></app-question>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!question.form">
+        <app-question [question]="question" [form]="form"></app-question>
+      </ng-container>
+    </div>
+
+    <div class="form-row">
+      <button type="submit" [disabled]="!form.valid">Save</button>
+    </div>
+  </form>
+  <br />
+
+  Need to have add and remove button.. <br /><br />
+
+  <button (click)="fillData()">Fill form</button>
+  <button (click)="clearData()">Clear Data</button><br /><br />
+  <pre
+    >{{ form?.value | json }}
+</pre
+  >
+</div>
+
+<!-- 
+Copyright 2017-2018 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->
